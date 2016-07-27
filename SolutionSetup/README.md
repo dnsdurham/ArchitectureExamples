@@ -1,0 +1,4 @@
+SolutionOrganization
+====================
+
+VS solution setup
