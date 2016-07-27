@@ -61,7 +61,7 @@ namespace EncryptFile
 
                 using (var inputFileStream = File.OpenRead(input))
                 using (var outputFileStream = File.OpenWrite(output))
-                using (CryptoStream csEncrypt = new CryptoStream(outputFileStream, encryptor, CryptoStreamMode.Write))
+                using (var csEncrypt = new CryptoStream(outputFileStream, encryptor, CryptoStreamMode.Write))
                 using (var swEncrypt = new StreamWriter(csEncrypt))
                 {
                     var buf = new byte[bufSize];
@@ -88,7 +88,6 @@ namespace EncryptFile
 
         public static void DecryptFile(string input, string output)
         {
-
             // Create an RijndaelManaged object 
             // with the specified key and IV. 
             using (RijndaelManaged rijAlg = new RijndaelManaged())
@@ -103,7 +102,7 @@ namespace EncryptFile
 
                 // Create the streams used for decryption. 
                 using (var msDecrypt = File.OpenRead(input))
-                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                 using (var decryptedFile = File.OpenWrite(output))
                 {
                     var buf = new byte[bufSize];
