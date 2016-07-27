@@ -46,40 +46,32 @@ namespace EncryptFile
 
                 if (!File.Exists(encrypted))
                 {
-                    
+
                     sw.Start();
 
                     // Create a decrytor to perform the stream transform.
                     ICryptoTransform encryptor = rijAlg.CreateEncryptor(rijAlg.Key, rijAlg.IV);
 
                     using (var inputFileStream = File.OpenRead(input))
+                    using (var outputFileStream = File.OpenWrite(encrypted))
+                    using (CryptoStream csEncrypt = new CryptoStream(outputFileStream, encryptor, CryptoStreamMode.Write))
+                    using (var swEncrypt = new StreamWriter(csEncrypt))
                     {
-                        // Create the streams used for encryption. 
-                        using (var outputFileStream = File.OpenWrite(encrypted))
+                        var buf = new byte[bufSize];
+
+                        int length = 0;
+                        int offset = 0;
+                        int loopCnt = 0;
+
+                        do
                         {
-                            using (CryptoStream csEncrypt = new CryptoStream(outputFileStream, encryptor, CryptoStreamMode.Write))
-                            {
-                                using (var swEncrypt = new StreamWriter(csEncrypt))
-                                {
-                                    var buf = new byte[bufSize];
-
-                                    int length = 0;
-                                    int offset = 0;
-                                    int loopCnt = 0;
-
-                                    do
-                                    {
-                                        length = inputFileStream.Read(buf, 0, buf.Length);
-                                        //Write all data to the stream.
-                                        csEncrypt.Write(buf, 0, length);
-                                        offset += length;
-                                        loopCnt++;
-                                    } while (length > 0);
-                                }
-                            }
-                        }
+                            length = inputFileStream.Read(buf, 0, buf.Length);
+                            //Write all data to the stream.
+                            csEncrypt.Write(buf, 0, length);
+                            offset += length;
+                            loopCnt++;
+                        } while (length > 0);
                     }
-
 
                     sw.Stop();
                     Console.WriteLine("encrypted in {0}ms", sw.Elapsed.Milliseconds);
@@ -90,33 +82,26 @@ namespace EncryptFile
 
                 // Create a decrytor to perform the stream transform.
                 ICryptoTransform decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
- 
+
                 // Create the streams used for decryption. 
                 using (var msDecrypt = File.OpenRead(encrypted))
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                using (var decryptedFile = File.OpenWrite(decrypted))
                 {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                        {
-                            using (var decryptedFile = File.OpenWrite(decrypted))
-                            {
-                                var buf = new byte[bufSize];
-                            
-                                int length = 0;
-                                int offset = 0;
-                                int loopCnt = 0;
+                    var buf = new byte[bufSize];
 
-                                do
-                                {                                    
-                                    length = csDecrypt.Read(buf, 0, buf.Length);
-                                    //Write all data to the stream.
-                                    decryptedFile.Write(buf, 0, length);
-                                    offset += length;
-                                    loopCnt++;
-                                } while (length > 0);
-                            }
-                        }
-                    }
+                    int length = 0;
+                    int offset = 0;
+                    int loopCnt = 0;
+
+                    do
+                    {
+                        length = csDecrypt.Read(buf, 0, buf.Length);
+                        //Write all data to the stream.
+                        decryptedFile.Write(buf, 0, length);
+                        offset += length;
+                        loopCnt++;
+                    } while (length > 0);
                 }
 
                 sw.Stop();
@@ -148,7 +133,7 @@ namespace EncryptFile
         private static string GenerateIV()
         {
             using (RijndaelManaged myRijndael = new RijndaelManaged())
-            {                          
+            {
                 myRijndael.GenerateIV();
                 return Convert.ToBase64String(myRijndael.IV);
             }

@@ -18,6 +18,8 @@ namespace EncryptFile
 
             var input = @"input.txt";
             var encrypted = @"working.encrypted";
+            var compressed = @"working.compressed";
+            var decompressed = @"working.deencrypted";
             var decrypted = @"output.txt";
 
             if (File.Exists(input))
@@ -28,6 +30,12 @@ namespace EncryptFile
 
             if (File.Exists(decrypted))
                 File.Delete(decrypted);
+
+            if (File.Exists(compressed))
+                File.Delete(compressed);
+
+            if (File.Exists(decompressed))
+                File.Delete(decompressed);
 
             var size = 1000;
             if (args != null && args.Length > 0)
@@ -50,43 +58,45 @@ namespace EncryptFile
 
                     sw.Start();
 
-                    // Create a encrypter to perform the stream transform.
+                    // Create a decrytor to perform the stream transform.
                     ICryptoTransform encryptor = rijAlg.CreateEncryptor(rijAlg.Key, rijAlg.IV);
 
                     using (var inputFileStream = File.OpenRead(input))
+                    using (var outputFileStream = File.OpenWrite(encrypted))
+                    using (CryptoStream csEncrypt = new CryptoStream(outputFileStream, encryptor, CryptoStreamMode.Write))
+                    using (var swEncrypt = new StreamWriter(csEncrypt))
                     {
-                        // Create the streams used for encryption. 
-                        using (var outputFileStream = File.OpenWrite(encrypted))
+                        var buf = new byte[bufSize];
+
+                        int length = 0;
+                        int offset = 0;
+                        int loopCnt = 0;
+
+                        do
                         {
-                            using (var compress = new GZipStream(outputFileStream, CompressionMode.Compress))
-                            {
-                                using (CryptoStream csEncrypt = new CryptoStream(compress, encryptor, CryptoStreamMode.Write))
-                                {
-                                    using (var swEncrypt = new StreamWriter(csEncrypt))
-                                    {
-                                        var buf = new byte[bufSize];
-
-                                        int length = 0;
-                                        int offset = 0;
-                                        int loopCnt = 0;
-
-                                        do
-                                        {
-                                            length = inputFileStream.Read(buf, 0, buf.Length);
-                                            //Write all data to the stream.
-                                            csEncrypt.Write(buf, 0, length);
-                                            offset += length;
-                                            loopCnt++;
-                                        } while (length > 0);
-                                    }
-                                }
-                            }
-                        }
+                            length = inputFileStream.Read(buf, 0, buf.Length);
+                            //Write all data to the stream.
+                            csEncrypt.Write(buf, 0, length);
+                            offset += length;
+                            loopCnt++;
+                        } while (length > 0);
                     }
 
 
                     sw.Stop();
                     Console.WriteLine("encrypted in {0}ms", sw.Elapsed.Milliseconds);
+                }
+
+                using (FileStream inFile = File.OpenRead(encrypted))
+                using (FileStream outFile = File.Create(fi.FullName + ".gz"))
+                using (GZipStream Compress = new GZipStream(outFile, CompressionMode.Compress))
+                {
+                    byte[] buffer = new byte[65536];
+                    int numRead;
+                    while ((numRead = inFile.Read(buffer, 0, buffer.Length)) != 0)
+                    {
+                        Compress.Write(buffer, 0, numRead);
+                    }
                 }
 
                 sw.Reset();
@@ -96,34 +106,25 @@ namespace EncryptFile
                 ICryptoTransform decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
 
                 // Create the streams used for decryption. 
-                using (var msDecrypt = File.OpenRead(encrypted))
+                using (var msDecrypt = File.OpenRead(decompressed))
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                using (var decryptedFile = File.OpenWrite(decrypted))
                 {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    var buf = new byte[bufSize];
+
+                    int length = 0;
+                    int offset = 0;
+                    int loopCnt = 0;
+
+                    do
                     {
-                        using (var decompress = new GZipStream(csDecrypt, CompressionMode.Decompress))
-                        {
-                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                            {
-                                using (var decryptedFile = File.OpenWrite(decrypted))
-                                {
-                                    var buf = new byte[bufSize];
+                        length = csDecrypt.Read(buf, 0, buf.Length);
+                        //Write all data to the stream.
+                        decryptedFile.Write(buf, 0, length);
+                        offset += length;
+                        loopCnt++;
+                    } while (length > 0);
 
-                                    int length = 0;
-                                    int offset = 0;
-                                    int loopCnt = 0;
-
-                                    do
-                                    {
-                                        length = srDecrypt.Read(buf, 0, buf.Length);
-                                        //Write all data to the stream.
-                                        decryptedFile.Write(buf, 0, length);
-                                        offset += length;
-                                        loopCnt++;
-                                    } while (length > 0);
-                                }
-                            }
-                        }
-                    }
                 }
 
                 sw.Stop();
