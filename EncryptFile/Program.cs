@@ -44,6 +44,9 @@ namespace EncryptFile
 
         private static void EncryptFile(string input, string output)
         {
+            var sw = new Stopwatch();
+            sw.Start();
+
             // Create an RijndaelManaged object 
             // with the specified key and IV. 
             using (RijndaelManaged rijAlg = new RijndaelManaged())
@@ -51,10 +54,6 @@ namespace EncryptFile
                 var key = "blah";
                 rijAlg.Key = MakeKey(key);
                 rijAlg.IV = IV64Bytes;
-
-                var sw = new Stopwatch();
-
-                sw.Start();
 
                 // Create a decrytor to perform the stream transform.
                 ICryptoTransform encryptor = rijAlg.CreateEncryptor(rijAlg.Key, rijAlg.IV);
@@ -81,13 +80,16 @@ namespace EncryptFile
                 }
 
                 sw.Stop();
-                Console.WriteLine("encrypted in {0}ms", sw.Elapsed.Milliseconds);
+                Console.WriteLine("encrypted in {0}ms", sw.Elapsed.TotalMilliseconds);
             }
 
         }
 
         public static void DecryptFile(string input, string output)
         {
+            var sw = new Stopwatch();
+            sw.Start();
+
             // Create an RijndaelManaged object 
             // with the specified key and IV. 
             using (RijndaelManaged rijAlg = new RijndaelManaged())
@@ -95,8 +97,7 @@ namespace EncryptFile
                 var key = "blah";
                 rijAlg.Key = MakeKey(key);
                 rijAlg.IV = IV64Bytes;
-
-                var sw = new Stopwatch();
+                
                 // Create a decrytor to perform the stream transform.
                 ICryptoTransform decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
 
@@ -122,7 +123,7 @@ namespace EncryptFile
                 }
 
                 sw.Stop();
-                Console.WriteLine("decrypted in {0}ms", sw.Elapsed.Milliseconds);
+                Console.WriteLine("decrypted in {0}ms", sw.Elapsed.TotalMilliseconds);
             }
         }
 
