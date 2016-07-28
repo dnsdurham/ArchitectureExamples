@@ -6,28 +6,11 @@ using System.Threading.Tasks;
 
 namespace LFR.Accessors
 {
-    public class ResourceAccessorFactory : IFactory
+    public class ResourceAccessorFactory : BaseFactory, IFactory
     {
-        List<object> _overrides = new List<object>();
-        public void AddOverride<I>(I proxy)
-            where I : class
+        public override I Create<I>()
         {
-            var result = _overrides.FirstOrDefault(t => t.GetType().Name == typeof(I).Name) as I;
-            if (result != null)
-                _overrides.Remove(result);
-
-            _overrides.Add(result);
-        }
-
-        public void ClearOverrides()
-        {
-            _overrides.Clear();
-        }
-
-        public I Create<I>()
-            where I : class
-        {
-            var result = _overrides.FirstOrDefault(t => t.GetType().Name == typeof(I).Name) as I;
+            var result = base.Create<I>();
             if (result != null)
                 return result;
 

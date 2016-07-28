@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LFR
 {
-    public interface IManagerService
+    public interface IManagerService : IBaseService
     {
         IFactory ResourceAccessorFactory { get; set; }
 

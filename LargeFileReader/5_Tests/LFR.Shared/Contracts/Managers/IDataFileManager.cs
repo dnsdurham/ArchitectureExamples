@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LFR
 {
-    public interface IDataFileManager : IBaseService
+    public interface IDataFileManager : IManagerService
     {
         string Read(string path, int start, bool makeLower);
         int NumberOfParts(string text);
