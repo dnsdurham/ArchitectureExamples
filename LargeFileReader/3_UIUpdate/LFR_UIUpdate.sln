@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Clients", "1.Clients", "{EAA3FD76-230B-44E9-864D-2C44A9223BCE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Managers", "2.Managers", "{DBB47963-D1DF-4FED-8D63-4CD5F19F88ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Engines", "3.Engines", "{CBE8CDEB-13F9-43EE-9492-F272E01D2785}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Resource Accessors", "4.Resource Accessors", "{2A24988C-E397-49C1-9320-A421009C55B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Shared", "5.Shared", "{DE9BCD0B-2F8E-4AAD-8FC3-B7005B7A18F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9.Tests", "9.Tests", "{6C3CA742-AA58-4241-987E-123B189C63BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFR.Client", "LFR_Client\LFR.Client.csproj", "{0E8AAD6B-7975-4C03-AE55-498AD3772F8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFR.Accessors", "LFR.Accessors\LFR.Accessors.csproj", "{057B4D78-4CF2-4F13-B7E0-D00C5E9D48C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFR.Managers", "LFR.Managers\LFR.Managers.csproj", "{D87563AD-6F96-4634-B5B8-1938F0EDB8DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFR.Shared", "LFR.Shared\LFR.Shared.csproj", "{AE0DF673-97CC-4ED3-B035-B51479E10BE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E8AAD6B-7975-4C03-AE55-498AD3772F8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8AAD6B-7975-4C03-AE55-498AD3772F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8AAD6B-7975-4C03-AE55-498AD3772F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8AAD6B-7975-4C03-AE55-498AD3772F8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{057B4D78-4CF2-4F13-B7E0-D00C5E9D48C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{057B4D78-4CF2-4F13-B7E0-D00C5E9D48C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{057B4D78-4CF2-4F13-B7E0-D00C5E9D48C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{057B4D78-4CF2-4F13-B7E0-D00C5E9D48C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D87563AD-6F96-4634-B5B8-1938F0EDB8DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D87563AD-6F96-4634-B5B8-1938F0EDB8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D87563AD-6F96-4634-B5B8-1938F0EDB8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D87563AD-6F96-4634-B5B8-1938F0EDB8DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE0DF673-97CC-4ED3-B035-B51479E10BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE0DF673-97CC-4ED3-B035-B51479E10BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE0DF673-97CC-4ED3-B035-B51479E10BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE0DF673-97CC-4ED3-B035-B51479E10BE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0E8AAD6B-7975-4C03-AE55-498AD3772F8A} = {EAA3FD76-230B-44E9-864D-2C44A9223BCE}
+		{057B4D78-4CF2-4F13-B7E0-D00C5E9D48C3} = {2A24988C-E397-49C1-9320-A421009C55B5}
+		{D87563AD-6F96-4634-B5B8-1938F0EDB8DC} = {DBB47963-D1DF-4FED-8D63-4CD5F19F88ED}
+		{AE0DF673-97CC-4ED3-B035-B51479E10BE3} = {DE9BCD0B-2F8E-4AAD-8FC3-B7005B7A18F0}
+	EndGlobalSection
+EndGlobal

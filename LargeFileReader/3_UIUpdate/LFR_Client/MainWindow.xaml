@@ -1,0 +1,30 @@
+﻿<Window x:Class="DemoArch_LargeFileReader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DemoArch_LargeFileReader"
+        mc:Ignorable="d"
+        Title="Large File" Height="600" Width="900">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+            <Label>File</Label>
+            <TextBox Name="FilePath" Width="200" IsEnabled="False" Margin="3"></TextBox>
+            <Button Name="SelectFile" Width="80" Margin="3" Click="SelectFile_Click">Select File</Button>
+            <Label>Start</Label>
+
+            <Slider Name="FilePosition" Width="500" ValueChanged="Slider_ValueChanged"></Slider>
+            
+        </StackPanel>
+        
+        <ScrollViewer Grid.Row="1">
+            <TextBox Name="Result" AcceptsReturn="True" IsEnabled="False"></TextBox>
+        </ScrollViewer>
+    </Grid>
+</Window>
